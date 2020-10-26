@@ -1,4 +1,4 @@
-"""This module contains the ``SeleniumRequest`` class"""
+"""This module contains the ``SeleniumRequestUc`` class"""
 
 from scrapy import Request
 

@@ -1,4 +1,4 @@
-"""This module contains the ``SeleniumMiddleware`` scrapy middleware"""
+"""This module contains the ``SeleniumUcMiddleware`` scrapy middleware"""
 
 from importlib import import_module
 

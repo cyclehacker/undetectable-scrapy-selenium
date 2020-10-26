@@ -3,11 +3,11 @@
 from setuptools import setup
 
 setup(
-    name='scrapy-selenium-undetectable',
+    name='undetectable-scrapy-selenium',
     version='0.1.0',
     packages=['scrapy_selenium_ud'],
     install_requires=["selenium", "undetected_chromedriver"],
-    url="https://github.com/cyclehacker/scrapy-selenium-undetectable.git",
+    url="https://github.com/cyclehacker/undetectable-scrapy-selenium",
     license="GPL-3.0",
     author="cyclehacker",
     description="""
