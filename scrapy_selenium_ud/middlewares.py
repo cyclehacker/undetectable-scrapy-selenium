@@ -102,13 +102,13 @@ class SeleniumUcMiddleware:
 
         self.driver.get(request.url)
 
-        for cookie_name, cookie_value in request.cookies.items():
-            self.driver.add_cookie(
-                {
-                    'name': cookie_name,
-                    'value': cookie_value
-                }
-            )
+        # for cookie_name, cookie_value in request.cookies.items():
+        #     self.driver.add_cookie(
+        #         {
+        #             'name': cookie_name,
+        #             'value': cookie_value
+        #         }
+        #     )
 
         if request.wait_until:
             WebDriverWait(self.driver, request.wait_time).until(
