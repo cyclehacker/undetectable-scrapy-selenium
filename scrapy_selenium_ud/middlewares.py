@@ -75,8 +75,8 @@ class SeleniumUcMiddleware:
         """Initialize the middleware with the crawler settings"""
 
         options = uc.ChromeOptions()
-        options.headless = True
-        options.add_argument('--headless')
+        # options.headless = True
+        # options.add_argument('--headless')
         driver = uc.Chrome(options=options)
 
         middleware = cls(
