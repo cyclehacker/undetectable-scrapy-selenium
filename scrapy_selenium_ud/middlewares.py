@@ -13,11 +13,11 @@ from .http import SeleniumRequestUc
 class SeleniumUcMiddleware:
     """Scrapy middleware handling the requests using selenium"""
 
-    def __init__(self):
-        self.options = uc.ChromeOptions()
-        self.options.headless = True
-        self.options.add_argument('--headless')
-        self.driver = uc.Chrome(options=self.options)
+    def __init__(self, options, driver):
+        self.options = options
+        # self.options.headless=True
+        # self.options.add_argument('--headless')
+        self.driver = driver
 
     # def __init__(self, driver_name, driver_executable_path,
     #              browser_executable_path, command_executor, driver_arguments):
@@ -70,34 +70,23 @@ class SeleniumUcMiddleware:
     #         self.driver = webdriver.Remote(command_executor=command_executor,
     #                                        desired_capabilities=capabilities)
 
-    # @classmethod
-    # def from_crawler(cls, crawler):
-    #     """Initialize the middleware with the crawler settings"""
-    #
-    #     driver_name = crawler.settings.get('SELENIUM_DRIVER_NAME')
-    #     driver_executable_path = crawler.settings.get('SELENIUM_DRIVER_EXECUTABLE_PATH')
-    #     browser_executable_path = crawler.settings.get('SELENIUM_BROWSER_EXECUTABLE_PATH')
-    #     command_executor = crawler.settings.get('SELENIUM_COMMAND_EXECUTOR')
-    #     driver_arguments = crawler.settings.get('SELENIUM_DRIVER_ARGUMENTS')
-    #
-    #     if driver_name is None:
-    #         raise NotConfigured('SELENIUM_DRIVER_NAME must be set')
-    #
-    #     if driver_executable_path is None and command_executor is None:
-    #         raise NotConfigured('Either SELENIUM_DRIVER_EXECUTABLE_PATH '
-    #                             'or SELENIUM_COMMAND_EXECUTOR must be set')
-    #
-    #     middleware = cls(
-    #         driver_name=driver_name,
-    #         driver_executable_path=driver_executable_path,
-    #         browser_executable_path=browser_executable_path,
-    #         command_executor=command_executor,
-    #         driver_arguments=driver_arguments
-    #     )
-    #
-    #     crawler.signals.connect(middleware.spider_closed, signals.spider_closed)
-    #
-    #     return middleware
+    @classmethod
+    def from_crawler(cls, crawler):
+        """Initialize the middleware with the crawler settings"""
+
+        options = uc.ChromeOptions()
+        options.headless = True
+        options.add_argument('--headless')
+        driver = uc.Chrome(options=options)
+
+        middleware = cls(
+            options=options,
+            driver=driver
+        )
+
+        crawler.signals.connect(middleware.spider_closed, signals.spider_closed)
+
+        return middleware
 
     def process_request(self, request, spider):
         """Process a request using the selenium driver if applicable"""
