@@ -5,8 +5,14 @@ from importlib import import_module
 from scrapy import signals
 from scrapy.exceptions import NotConfigured
 from scrapy.http import HtmlResponse
-from selenium.webdriver.support.ui import WebDriverWait
 import undetected_chromedriver as uc
+uc.install()
+from selenium.webdriver import Chrome
+from selenium.webdriver import ChromeOptions
+from selenium.common.exceptions import TimeoutException, WebDriverException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from .http import SeleniumRequestUc
 
 
@@ -74,10 +80,10 @@ class SeleniumUcMiddleware:
     def from_crawler(cls, crawler):
         """Initialize the middleware with the crawler settings"""
 
-        # options = uc.ChromeOptions()
-        # options.headless = True
-        # options.add_argument('--headless')
-        driver = uc.Chrome()
+        options = ChromeOptions()
+        options.add_argument('--headless')
+        options.page_load_strategy = 'none'
+        driver = uc.Chrome(options=options)
 
         middleware = cls(
             # options=options,
@@ -95,8 +101,6 @@ class SeleniumUcMiddleware:
             return None
 
         self.driver.get(request.url)
-        self.driver.execute_script('return navigator.webdriver')
-        self.driver.implicitly_wait(5)
 
         for cookie_name, cookie_value in request.cookies.items():
             self.driver.add_cookie(
