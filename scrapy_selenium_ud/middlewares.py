@@ -13,8 +13,8 @@ from .http import SeleniumRequestUc
 class SeleniumUcMiddleware:
     """Scrapy middleware handling the requests using selenium"""
 
-    def __init__(self, options, driver):
-        self.options = options
+    def __init__(self, driver):
+        # self.options = options
         # self.options.headless=True
         # self.options.add_argument('--headless')
         self.driver = driver
@@ -74,13 +74,13 @@ class SeleniumUcMiddleware:
     def from_crawler(cls, crawler):
         """Initialize the middleware with the crawler settings"""
 
-        options = uc.ChromeOptions()
+        # options = uc.ChromeOptions()
         # options.headless = True
         # options.add_argument('--headless')
-        driver = uc.Chrome(options=options)
+        driver = uc.Chrome()
 
         middleware = cls(
-            options=options,
+            # options=options,
             driver=driver
         )
 
@@ -95,6 +95,8 @@ class SeleniumUcMiddleware:
             return None
 
         self.driver.get(request.url)
+        self.driver.execute_script('return navigator.webdriver')
+        self.driver.implicitly_wait(5)
 
         for cookie_name, cookie_value in request.cookies.items():
             self.driver.add_cookie(
